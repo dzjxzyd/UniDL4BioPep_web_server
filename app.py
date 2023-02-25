@@ -184,11 +184,11 @@ def get_activity(model_name, sequence_list) -> list:
                 predicted_class.append(0)
         # reverse results for several model
         if 'umami' or 'AMAP' or 'MRSA' or 'AMP' or 'TTCA' in model_name:
-             for i in range(len(predicted_class)):
-                 if predicted_class[i]==0:
-                     predicted_class_new.append(1)
-                 else:
-                     predicted_class_new.append(0)
+            for i in range(len(predicted_class)):
+                if predicted_class[i]==0:
+                    predicted_class_new.append(1)
+                else:
+                    predicted_class_new.append(0)
         else:
             predicted_class_new = predicted_class
 

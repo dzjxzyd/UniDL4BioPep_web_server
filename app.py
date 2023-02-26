@@ -197,7 +197,7 @@ def get_activity(model_name, sequence_list) -> list:
             index = np.where(predicted_protability[i] == np.amax(predicted_protability[i]))[0][0]
             predicted_class.append(index)  # get the class of the results
         # AMP dataset is different where 0 is negative and 1 is positive
-        if 'AMP' in model_name or '6_AMAP_main' in model_name:
+        if 'AMP' in model_name or '6_AMAP_main' in model_name or '14_antioxidant' in model_name:
              for i in range(len(predicted_class)):
                  if predicted_class[i]==0:
                      predicted_class_new.append(1)
@@ -273,7 +273,7 @@ def predict():
             index = np.where(predicted_protability[i] == np.amax(predicted_protability[i]))[0][0]
             predicted_class.append(index)  # get the class of the results
         # AMP dataset is different where 0 is negative and 1 is positive
-        if 'AMP' in model_name or '6_AMAP_main' in model_name:
+        if 'AMP' in model_name or '6_AMAP_main' in model_name or '14_antioxidant' in model_name:
              for i in range(len(predicted_class)):
                  if predicted_class[i]==0:
                      predicted_class_new.append(1)

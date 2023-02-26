@@ -183,21 +183,7 @@ def get_activity(model_name, sequence_list) -> list:
             else:
                 predicted_class.append(0)
         # reverse results for several model
-        if 'umami' or 'AMAP' or 'MRSA' or 'TTC' in model_name:
-            for i in range(len(predicted_class)):
-                if predicted_class[i]==0:
-                    predicted_class_new.append(1)
-                else:
-                    predicted_class_new.append(0)
-        else:
-            predicted_class_new = predicted_class
-
-    else:
-        for i in range(predicted_protability.shape[0]):
-            index = np.where(predicted_protability[i] == np.amax(predicted_protability[i]))[0][0]
-            predicted_class.append(index)  # get the class of the results
-        # AMP dataset is different where 0 is negative and 1 is positive 
-        if 'AMP' in model_name:
+        if 'umami' in model_name or 'AMAP' in model_name or 'MRSA' in model_name or  'AMP' in model_name:
              for i in range(len(predicted_class)):
                  if predicted_class[i]==0:
                      predicted_class_new.append(1)
@@ -205,7 +191,21 @@ def get_activity(model_name, sequence_list) -> list:
                      predicted_class_new.append(0)
         else:
             predicted_class_new = predicted_class
-            
+
+    else:
+        for i in range(predicted_protability.shape[0]):
+            index = np.where(predicted_protability[i] == np.amax(predicted_protability[i]))[0][0]
+            predicted_class.append(index)  # get the class of the results
+        # AMP dataset is different where 0 is negative and 1 is positive
+        if 'AMP' in model_name or '6_AMAP_main' in model_name:
+             for i in range(len(predicted_class)):
+                 if predicted_class[i]==0:
+                     predicted_class_new.append(1)
+                 else:
+                     predicted_class_new.append(0)
+        else:
+            predicted_class_new = predicted_class
+
     predicted_class_new = assign_activity(predicted_class_new)  # transform results (0 and 1) into 'active' and 'non-active'
     return predicted_class_new
 
@@ -259,7 +259,7 @@ def predict():
             else:
                 predicted_class.append(0)
         # reverse results for several model
-        if 'umami' or 'AMAP' or 'MRSA' or 'TTC' in model_name:
+        if 'umami' in model_name or 'AMAP' in model_name or 'MRSA' in model_name or 'AMP' in model_name:
              for i in range(len(predicted_class)):
                  if predicted_class[i]==0:
                      predicted_class_new.append(1)
@@ -272,8 +272,8 @@ def predict():
         for i in range(predicted_protability.shape[0]):
             index = np.where(predicted_protability[i] == np.amax(predicted_protability[i]))[0][0]
             predicted_class.append(index)  # get the class of the results
-        # AMP dataset is different where 0 is negative and 1 is positive 
-        if 'AMP' in model_name:
+        # AMP dataset is different where 0 is negative and 1 is positive
+        if 'AMP' in model_name or '6_AMAP_main' in model_name:
              for i in range(len(predicted_class)):
                  if predicted_class[i]==0:
                      predicted_class_new.append(1)
@@ -281,7 +281,7 @@ def predict():
                      predicted_class_new.append(0)
         else:
             predicted_class_new = predicted_class
-            
+
     predicted_class = assign_activity(predicted_class_new)  # transform results (0 and 1) into 'active' and 'non-active'
     final_output = []
     for i in range(len(sequence_list)):
@@ -324,6 +324,7 @@ def pred_with_file():
         return home()
 
     report = {"sequence": sequence_list}
+    print(models)
     for model in models:
         model_name = model_selection(model)
         activities = get_activity(model_name, sequence_list)

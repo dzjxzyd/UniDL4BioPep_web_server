@@ -115,6 +115,106 @@
 	  <p style="font-size:70%"> Antihypertensive： Angiotensin-converting enzyme inhibitory activity (main target in for hypertension); DPPIV: dipeptidyl peptidase IV (DPPIV) inhibitory activity (main target for diabetes); AMP: antimicrobial activity; AMAP: antimalarial activity (main and alternative is corresponding to two datasets; QS: quorum-sensing activity; ACP: anticancer activity: MRSA: anti-methicillin-resistant S. aureus strains activity); TTCA: tumor T cell antigens; BBP: blood-brain barrier peptide; APP: anti-parasitic activity; FL: is just an indicator of the Focal loss as loss function version, typically, we recommend the FL-version if available (for balanced datassets, we do not using FL for model generation, but you can try it based our our template tutorial in github) </p>	
 	  <h4>The whole model architecture</h4>
           <img src="static/css/Whole architecture.png" alt="Whole architecture" width="950" height="650" style="float:left">
+          <h4>Dataset for the those models</h4>
+          <table>
+          <thead>
+            <tr>
+              <th>Bioactivity</th>
+              <th>Training dataset</th>
+              <th>Test dataset</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; vertical-align: middle;">ACE inhibitory activity</td>
+              <td style="text-align: center; vertical-align: middle;">913 positives and 913 negatives</td>
+              <td style="text-align: center; vertical-align: middle;">386 positives and 386 negatives</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align: middle;">DPP IV inhibitory activity</td>
+              <td style="text-align: center; vertical-align: middle;">532 positives and 532 negatives</td>
+              <td style="text-align: center; vertical-align: middle;">133 positives and 133 negatives</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align: middle;">Bitter</td>
+              <td style="text-align: center; vertical-align: middle;">256 positives and 256 negatives</td>
+              <td style="text-align: center; vertical-align: middle;">64 positives and 64 negatives</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align: middle;">Umami</td>
+              <td style="text-align: center; vertical-align: middle;">112 positives and 241 negatives</td>
+              <td style="text-align: center; vertical-align: middle;">28 positives and 61 negatives</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align: middle;">Antimicrobial activity</td>
+              <td style="text-align: center; vertical-align: middle;">3876 positives and 9552 negatives</td>
+              <td style="text-align: center; vertical-align: middle;">2584 positives and 6369 negatives</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align: middle;">Antimalarial activity</td>
+              <td style="text-align: center; vertical-align: middle;">Main dataset (111 positives and 1708 negatives); alternative dataset (111 positives and 542 negatives)</td>
+              <td style="text-align: center; vertical-align: middle;">Main dataset (28 positives and 427 negatives); alternative dataset (28 positives and 135 negatives)</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align: middle;">Quorum sensing activity</td>
+              <td style="text-align: center; vertical-align: middle;">200 positives and 200 negatives</td>
+              <td style="text-align: center; vertical-align: middle;">20 positives and 20 negatives</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align: middle;">Anticancer activity</td>
+              <td style="text-align: center; vertical-align: middle;">Main dataset (689 positives and 689 negatives); alternative dataset (776 positives and 776 negatives)</td>
+              <td style="text-align: center; vertical-align: middle;">Main dataset (172 positives and 172 negatives); alternative dataset (194 positives and 194 negatives)</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align: middle;">Anti-MRSA strains activity</td>
+              <td style="text-align: center; vertical-align: middle;">118 positives and 678 negatives</td>
+              <td style="text-align: center; vertical-align: middle;">30 positives and 169 negatives</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align: middle;">Tumor T cell antigens</td>
+              <td style="text-align: center; vertical-align: middle;">470 positives and 318 negatives</td>
+              <td style="text-align: center; vertical-align: middle;">122 positives and 75 negatives</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align: middle;">Blood-Brain Barrier</td>
+              <td style="text-align: center; vertical-align: middle;">100 positives and 100 negatives</td>
+              <td style="text-align: center; vertical-align: middle;">19 positives and 19 negatives</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align: middle;">Anti-parasitic activity</td>
+              <td style="text-align: center; vertical-align: middle;">255 positives and 255 negatives</td>
+              <td style="text-align: center; vertical-align: middle;">46 positives and 46 negatives</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align: middle;">Neuropeptide</td>
+              <td style="text-align: center; vertical-align: middle;">1940 positives and 1940 negatives</td>
+              <td style="text-align: center; vertical-align: middle;">485 positives and 485 negatives</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align: middle;">Antibacterial activity</td>
+              <td style="text-align: center; vertical-align: middle;">6583 positives and 6583 negatives</td>
+              <td style="text-align: center; vertical-align: middle;">1695 positives and 1695 negatives</td>
+            </tr>
+              <td style="text-align: center; vertical-align: middle;">Antifungal activity</td>
+              <td style="text-align: center; vertical-align: middle;">778 positives and 778 negatives</td>
+              <td style="text-align: center; vertical-align: middle;">215 positives and 215 negatives</td>
+            </tr>
+            <tr>
+            <td style="text-align: center; vertical-align: middle;">Antiviral activity</td>
+              <td style="text-align: center; vertical-align: middle;">2321 positives and 2321 negatives</td>
+              <td style="text-align: center; vertical-align: middle;">623 positives and 623 negatives</td>
+            </tr>
+            <tr>
+            <td style="text-align: center; vertical-align: middle;">Toxicity</td>
+              <td style="text-align: center; vertical-align: middle;">1642 positives and 1642 negatives</td>
+              <td style="text-align: center; vertical-align: middle;">290 positives and 290 negatives</td>
+            </tr>
+            <tr>
+            <td style="text-align: center; vertical-align: middle;">Antioxidant activity</td>
+              <td style="text-align: center; vertical-align: middle;">582 positives and 541 negatives</td>
+              <td style="text-align: center; vertical-align: middle;">146 positives and 135 negatives</td>
+            </tr>
+          </table>
       </div>
   </body>
   </html>

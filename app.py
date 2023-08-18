@@ -149,7 +149,12 @@ def text_fasta_reading(file_name):
     sequence_name_collect = collections.defaultdict(list)
     for i in range(len(file_content)):
         if '>' in file_content[i]:  # check the symbol of the
-            sequence_name_collect[file_content[i]].append(file_content[i + 1])
+            a = i+1
+            seq_template = str()
+            while a <len(file_content) and '>' not in file_content[a] and len(file_content[a])!= 0 :
+                seq_template = seq_template + file_content[a]
+                a=a+1
+            sequence_name_collect[file_content[i]].append(seq_template)
 
     # transformed into the same style as the xlsx file loaded with pd.read_excel and sequence_list = dataset['sequence']
     sequence_name_collect = pd.DataFrame(sequence_name_collect).T

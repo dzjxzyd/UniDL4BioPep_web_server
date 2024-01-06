@@ -221,19 +221,16 @@ def get_activity(model_name, sequence_list) -> list:
             else:
                 predicted_class_new.append(0)
                 predicted_protability_new.append(predicted_protability[i][0])
-
+        
     else:
-        # for i in range(predicted_protability.shape[0]):
-        #     index = np.where(predicted_protability[i] == np.amax(predicted_protability[i]))[0][0]
-        #     predicted_class.append(index)  # get the class of the results
-
+        for i in range(predicted_protability.shape[0]):
+            index = np.where(predicted_protability[i] == np.amax(predicted_protability[i]))[0][0]
+            predicted_class.append(index)  # get the class of the results
+            # predicted_class
+            # predicted_protability
         # AMP dataset is different where 0 is negative and 1 is positive
         if 'AMP' in model_name or '14_antioxidant' in model_name:
-            for i in range(predicted_protability.shape[0]):
-                if predicted_protability[i][0]>=0.5:
-                    predicted_class.append(1)
-                else:
-                    predicted_class.append(0)
+
             for i in range(len(predicted_class)):
                 if predicted_class[i]==0:
                     predicted_class_new.append(1)
@@ -243,15 +240,10 @@ def get_activity(model_name, sequence_list) -> list:
                     predicted_protability_new.append(predicted_protability[i][1])
 
         else:
-            for i in range(predicted_protability.shape[0]):
-                if predicted_protability[i][0]>=0.5:
-                    predicted_class.append(0)
-                else:
-                    predicted_class.append(1)
             predicted_class_new = predicted_class
             predicted_protability_new =predicted_protability[:,0]
     predicted_class_new = assign_activity(predicted_class_new)  # transform results (0 and 1) into 'active' and 'non-active'
-    return predicted_class_new, predicted_protability_new
+    return predicted_protability_new
 
 
 # create an app object using the Flask class
@@ -371,10 +363,8 @@ def pred_with_file():
     print(models)
     for model in models:
         model_name = model_selection(model)
-        activities, protability = get_activity(model_name, sequence_list)
+        activities = get_activity(model_name, sequence_list)
         report[model_name] = activities
-        protability_column_model = model_name + 'protability'
-        report[protability_column_model] = protability
 
     report_df = pandas.DataFrame(report)
     save_result_path = os.path.join('input', "report.xlsx")
@@ -386,3 +376,5 @@ def pred_with_file():
 
 if __name__ == '__main__':
     app.run()
+
+

@@ -373,7 +373,7 @@ def pred_with_file():
         model_name = model_selection(model)
         activities, protability = get_activity(model_name, sequence_list)
         report[model_name] = activities
-        protability_column_model = model_name + '_protability'
+        protability_column_model = model_name + 'protability'
         report[protability_column_model] = protability
 
     report_df = pandas.DataFrame(report)

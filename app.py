@@ -234,12 +234,11 @@ def get_activity(model_name, sequence_list) -> list:
                     predicted_class.append(1)
                 else:
                     predicted_class.append(0)
+                predicted_class_new = predicted_class
             for i in range(len(predicted_class)):
                 if predicted_class[i]==0:
-                    predicted_class_new.append(1)
                     predicted_protability_new.append(predicted_protability[i][1])
                 else:
-                    predicted_class_new.append(0)
                     predicted_protability_new.append(predicted_protability[i][1])
 
         else:

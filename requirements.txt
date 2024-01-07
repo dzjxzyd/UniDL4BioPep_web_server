@@ -11,4 +11,4 @@ joblib==1.2.0
 gunicorn==20.1.0
 werkzeug==2.2.2
 focal-loss
-openpyxl～=3.0.9
+openpyxl==3.0.9

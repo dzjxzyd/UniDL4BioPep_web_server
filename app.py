@@ -171,14 +171,15 @@ def get_activity(model_name, sequence_list) -> list:
     scaler = joblib.load(os.path.join(os.getcwd(),scaler_name))
     # 因为这个list里又两个element我们需要第二个，所以我只需要把吧这个拿出来，然后split
     # 另外需要注意，这个地方，网页上输入的时候必须要是AAA,CCC,SAS, 这个格式，不同的sequence的区分只能使用逗号，其他的都不可以
-    peptide_sequence_list = []
-
+    embeddings_results = pd.DataFrame()
     for seq in sequence_list:
         format_seq = [seq, seq]  # the setting is just following the input format setting in ESM model, [name,sequence]
         tuple_sequence = tuple(format_seq)
+        peptide_sequence_list = []
         peptide_sequence_list.append(tuple_sequence)  # build a summarize list variable including all the sequence information
-
-    embeddings_results = esm_embeddings(peptide_sequence_list)  # conduct the embedding
+        one_seq_embeddings = esm_embeddings(peptide_sequence_list)  # conduct the embedding
+        embeddings_results = pd.concat([embeddings_results,one_seq_embeddings])
+        
     normalized_embeddings_results = scaler.transform(embeddings_results)  # normalized the embeddings
     normalized_embeddings_results.shape
     # prediction
@@ -279,14 +280,14 @@ def predict():
 
     sequence_list = int_features[1].split(',')  # 因为这个list里又两个element我们需要第二个，所以我只需要把吧这个拿出来，然后split
     # 另外需要注意，这个地方，网页上输入的时候必须要是AAA,CCC,SAS, 这个格式，不同的sequence的区分只能使用逗号，其他的都不可以
-    peptide_sequence_list = []
+    embeddings_results = pd.DataFrame()
     for seq in sequence_list:
         format_seq = [seq, seq]  # the setting is just following the input format setting in ESM model, [name,sequence]
         tuple_sequence = tuple(format_seq)
-        peptide_sequence_list.append(
-            tuple_sequence)  # build a summarize list variable including all the sequence information
-
-    embeddings_results = esm_embeddings(peptide_sequence_list)  # conduct the embedding
+        peptide_sequence_list = []
+        peptide_sequence_list.append(tuple_sequence)  # build a summarize list variable including all the sequence information
+        one_seq_embeddings = esm_embeddings(peptide_sequence_list)  # conduct the embedding
+        embeddings_results = pd.concat([embeddings_results,one_seq_embeddings])
     normalized_embeddings_results = scaler.transform(embeddings_results)  # normalized the embeddings
 
     # prediction

@@ -36,7 +36,7 @@ while the 8.01560872787377E-07 means the probability the model predict it is act
 	include the sequence length of your input sequence, length of the seqeunce, and (1,320) (this 1,320 is the embedding matrix)
 	
 2. if there is an error and in the Terminal said "can not allocate enough memory", that means the local machine can not process the embeddings,
-	generally, the reason is the input sequence is toooooo long, maybe more than 8000 residues (Our local machine is very powerful, you can only tray to build this server on PC with A100 40GB GPU memory)
+	generally, the reason is the input sequence is toooooo long, maybe more than 8000 residues (Our local machine is very powerful, you can only try to build this server on PC with A100 40GB GPU memory)
 	
 
 

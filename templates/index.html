@@ -26,7 +26,20 @@
         <h1>UniDL4BioPep: A universal deep learning architecture for bioactive peptide prediction</h1>
         <p style="font-size:70%">The webserver is the implementation of the paper "Du, Z., Ding, X., Xu, Y., & Li, Y. (2023). UniDL4BioPep: a universal deep learning architecture for binary classification in peptide bioactivity. Briefings in Bioinformatics, bbad135."</p>
         <p style="font-size:70%">Notice: For very large dataset processing: please download our model locally or contact us at zhenjiao@ksu.edu or yonghui@ksu.edu for more assistant.  </p>
-	<fieldset>
+  <fieldset>
+            <legend>Result Explanation</legend>
+            <p style="font-size:80%; font-family:monospace;">
+            <p style="font-size:80%; font-family:monospace;">   sequence    Antihypertensive    Antihypertensive_probability</p>
+            <p style="font-size:80%; font-family:monospace;">   QKTAP       active              0.981061339</p>
+            <p style="font-size:80%; font-family:monospace;">   NNWNG       non-active          0.045210306</p>
+            <p style="font-size:80%; font-family:monospace;">  "Antihypertensive probability" is an indicator of how confident the model is with its prediction. </p>
+            <p style="font-size:80%; font-family:monospace;">  For example:</p>
+            <p style="font-size:80%; font-family:monospace;">  - A probability of 0.981061339 indicates the model is 98.1% confident in the active prediction.</p>
+            <p style="font-size:80%; font-family:monospace;">  - A probability of 0.045210306 indicates the model is only 4.5% confident in the active prediction, resulting in a non-active output.</p>
+                          
+  </fieldset>
+  
+  <fieldset>
         <p style="font-size:80%">Quick output version: 1. Choose a model  → 2. Input a peptide sequence</p>
         <form action="{{url_for('predict')}}" method="post">
             <label for="Model selection">Choose a model:</label>
@@ -54,15 +67,14 @@
                 <option value="21">Allergen</option>
                 <option value="22">Cell Penetrating Peptide</option>
             </select>
-{#            <input type="text" name="Model selection" placeholder="input model index, example:1" required="required">#}
             <input type="text" name="Peptide_sequences" placeholder="peptide sequence input, example: ASD,QWE,APE" required="required" />
             <button type="submit" class="btn btn-primary btn-block btn-large">Run</button>
         </form>
         <p style="color:cyan"> {{ prediction_text }} </p>
-        </fieldset>
+  </fieldset>
         <br/>
         <br/>
-        <fieldset>
+  <fieldset>
         <p style="font-size:80%">Large-scale output version: 1. Prepare your files (xls, xlsx, fasta, or txt) and click “Choose File” for uploading → 2. Choose one or multiple models  → 3. Download the results.</p>
         <form action="{{url_for('pred_with_file')}}" method="post" enctype = "multipart/form-data">
             <label for="Model_selection">Choose your favorite model(s):</label> <br/>
@@ -92,6 +104,8 @@
             <label for="Peptide_sequences">Choose a file to upload</label>
             <input type="file" name="Peptide_sequences" id="Peptide_sequences" accept=".xls,.xlsx,.txt,.fasta"/>
             <button type="submit" class="btn btn-primary btn-block btn-large">Run</button>
+  </fieldset>
+          <br/>
           </form>
           <h4>Usage of the webserver:</h4>
           <p style="font-size:80%"> Example for “Quick output version” : </p>

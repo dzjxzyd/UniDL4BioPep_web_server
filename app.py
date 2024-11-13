@@ -1,45 +1,26 @@
 import os
 import numpy as np
-import pandas
-from keras.models import load_model
-from flask import Flask, request, url_for, redirect, render_template, send_from_directory
-import joblib
-import pickle
 import pandas as pd
+from keras.models import load_model
+from flask import Flask, request, render_template, send_from_directory
+import joblib
 from werkzeug.utils import secure_filename
-from focal_loss import BinaryFocalLoss
-
+# from focal_loss import BinaryFocalLoss
+import torch
+import esm
+import collections
 app = Flask(__name__)
-
 
 # embeddings function
 def esm_embeddings(peptide_sequence_list: list):
-    # NOTICE: ESM for embeddings is quite RAM usage, if your sequence is too long,
-    #         or you have too many sequences for transformation in a single converting,
-    #         you conputer might automatically kill the job.
-    # return a panda.dataframe
-    import torch
-    import pandas as pd
-    import esm
-    import collections
-    # load the model
-    # NOTICE: if the model was not downloaded in your local environment, it will automatically download it.
     model, alphabet = esm.pretrained.esm2_t6_8M_UR50D()
     batch_converter = alphabet.get_batch_converter()
-    model.eval()  # disables dropout for deterministic results
-
-    # load the peptide sequence list into the bach_converter
+    model.eval() 
     batch_labels, batch_strs, batch_tokens = batch_converter(peptide_sequence_list)
     batch_lens = (batch_tokens != alphabet.padding_idx).sum(1)
-    ## batch tokens are the embedding results of the whole data set
-
-    # Extract per-residue representations (on CPU)
     with torch.no_grad():
-        # Here we export the last layer of the EMS model output as the representation of the peptides
-        # model'esm2_t6_8M_UR50D' only has 6 layers, and therefore repr_layers parameters is equal to 6
         results = model(batch_tokens, repr_layers=[6], return_contacts=True)
     token_representations = results["representations"][6]
-
     # Generate per-sequence representations via averaging
     # NOTE: token 0 is always a beginning-of-sequence token, so the first residue is token 1.
     sequence_representations = []
@@ -56,13 +37,12 @@ def esm_embeddings(peptide_sequence_list: list):
     embeddings_results = pd.DataFrame(embeddings_results).T
     return embeddings_results
 
-
 # collect the output
 def assign_activity(predicted_class):
     import collections
     out_put = []
     for i in range(len(predicted_class)):
-        if predicted_class[i] == 0:
+        if predicted_class[i] == 1:
             # out_put[int_features[i]].append(1)
             out_put.append('active')
         else:
@@ -74,64 +54,77 @@ def assign_activity(predicted_class):
 def get_filetype(filename):
     return filename.rsplit('.', 1)[1].lower()
 
-
 def model_selection(num: str):
     model = ''
     if num == '1':
-        model = '1_Antihypertensive'
+        model = 'AHT_'
+        activity_name = 'Antihypertensive'
     elif num == '2':
-        model = '2_DPPIV'
+        model = 'DPPIV_'
+        activity_name = 'DPPIV'
     elif num == '3':
-        model = '3_bitter'
+        model = 'bitter_'
+        activity_name = 'Bitter'
     elif num == '4':
-        model = '4_umami'
+        model = 'umami_'
+        activity_name = 'Umami'
     elif num == '5':
-        model = '5_AMP'
+        model = 'AMP_'
+        activity_name = 'Antimicrobial'
     elif num == '6':
-        model = '6_AMAP_main'
+        model = 'Antimarial_alternative_'
+        activity_name = 'Antimarial-alternative'
     elif num == '7':
-        model = '7_AMAP_alternative'
+        model = 'Antimalarial_main_'
+        activity_name = 'Antimalarial-main'
     elif num == '8':
-        model = '8_QS'
+        model = 'QS_'
+        activity_name = 'Quorum sensing'
     elif num == '9':
-        model = '9_ACP_main'
+        model = 'ACP_alternative_'
+        activity_name = 'Anticancer-alternative'
     elif num == '10':
-        model = '10_ACP_alternative'
+        model = 'ACP_main_'
+        activity_name = 'Anticancer-main'
     elif num == '11':
-        model = '11_MRSA_main'
+        model = 'anti_MRSA_'
+        activity_name = 'Anti_MRSA'
     elif num == '12':
-        model = '12_TTCA'
+        model = 'TTCA_'
+        activity_name = 'Tumor T-cell antigens'
     elif num == '13':
-        model = '13_AF'
+        model = 'BBP_'
+        activity_name = 'Blood-Brain Barrier Penetrating Peptides'
     elif num == '14':
-        model = '14_antioxidant'
+        model = 'APP_'
+        activity_name = 'Anti-parasitic'
     elif num == '15':
-        model = '15_AV'
+        model = 'neuro_'
+        activity_name = 'Neuropeptide'
     elif num == '16':
-        model = '16_AB'
+        model = 'AB_'
+        activity_name = 'Antibacterial'
     elif num == '17':
-        model = '17_BBP'
+        model = 'AF_'
+        activity_name = 'Antifungal'
     elif num == '18':
-        model = '18_Toxicity'
+        model = 'AV_'
+        activity_name = 'Antiviral'
     elif num == '19':
-        model = '19_neuro'
+        model = 'toxicity_'
+        activity_name = 'Toxicity'
     elif num == '20':
-        model = '20_APP'
+        model = 'Antioxidant_'
+        activity_name = 'Antioxidant'
     elif num == '21':
-        model = '21_FL_TTCA'
+        model = 'Allergen_'
+        activity_name = 'Allergen'
     elif num == '22':
-        model = '22_FL_umami'
-    elif num == '23':
-        model = '23_FL_AMAP_alternative'
-    elif num == '24':
-        model = '24_FL_AMAP_main'
-    elif num == '25':
-        model = '25_FL_AMP'
-    elif num == '26':
-        model = '26_FL_MRSA'
+        model = 'CPP_'
+        activity_name = 'Cell Penetrating Peptide'
     else:
-        raise ValueError("Model id should be the above 26 model")
-    return model
+        raise ValueError("Model id should be one of the above 22 models")
+    return model, activity_name
 
 
 def text_fasta_reading(file_name):
@@ -166,8 +159,10 @@ def get_activity(model_name, sequence_list) -> list:
     # os.chdir('/Users/zhenjiaodu/Downloads/UniDL4BioPep_web_server-main_2')
     # model_name = '6_AMAP_main'
     # sequence_list=['QPFPQPQLPY','IPPYCTIAPV','SLQALRSMC']
-    model = load_model(model_name)
-    scaler_name = model_name + '.joblib'
+    model_name_full = model_name + 'best_model.keras'
+    print(model_name_full)
+    model = load_model(model_name_full)
+    scaler_name = model_name + 'minmax_scaler.pkl'
     scaler = joblib.load(os.path.join(os.getcwd(),scaler_name))
     # 因为这个list里又两个element我们需要第二个，所以我只需要把吧这个拿出来，然后split
     # 另外需要注意，这个地方，网页上输入的时候必须要是AAA,CCC,SAS, 这个格式，不同的sequence的区分只能使用逗号，其他的都不可以
@@ -181,77 +176,12 @@ def get_activity(model_name, sequence_list) -> list:
         embeddings_results = pd.concat([embeddings_results,one_seq_embeddings])
         
     normalized_embeddings_results = scaler.transform(embeddings_results)  # normalized the embeddings
-    normalized_embeddings_results.shape
     # prediction
-    predicted_protability = model.predict(normalized_embeddings_results, batch_size=1)
-    predicted_class = []
-    predicted_class_new = []
-    predicted_protability_new = []
+    predicted_probability = model.predict(normalized_embeddings_results, batch_size=1)
+    predicted_class = np.argmax(predicted_probability, axis=1) # operating horizontally /// row-wise
 
-
-    if 'FL' in model_name:
-        for i in range(predicted_protability.shape[0]):
-            if predicted_protability[i][0]>=0.5:
-                predicted_class.append(1)
-            else:
-                predicted_class.append(0)
-        predicted_class
-        # reverse results for several model
-        if 'umami' in model_name or 'AMAP' in model_name or 'MRSA' in model_name or  'AMP' in model_name:
-             for i in range(len(predicted_class)):
-                 if predicted_class[i]==0:
-                     predicted_class_new.append(1)
-                     predicted_protability_new.append(predicted_protability[i][0])
-                 else:
-                     predicted_class_new.append(0)
-                     predicted_protability_new.append(predicted_protability[i][0])
-        else:
-            predicted_class_new = predicted_class
-            predicted_protability_new =1- predicted_protability[:,0]
-    elif '6_AMAP_main' in model_name:
-        for i in range(predicted_protability.shape[0]):
-            if predicted_protability[i][0]>=0.5:
-                predicted_class.append(1)
-            else:
-                predicted_class.append(0)
-        predicted_class
-        for i in range(len(predicted_class)):
-            if predicted_class[i]==0:
-                predicted_class_new.append(1)
-                predicted_protability_new.append(predicted_protability[i][0])
-            else:
-                predicted_class_new.append(0)
-                predicted_protability_new.append(predicted_protability[i][0])
-
-    else:
-        # for i in range(predicted_protability.shape[0]):
-        #     index = np.where(predicted_protability[i] == np.amax(predicted_protability[i]))[0][0]
-        #     predicted_class.append(index)  # get the class of the results
-
-        # AMP dataset is different where 0 is negative and 1 is positive
-        if 'AMP' in model_name or '14_antioxidant' in model_name:
-            for i in range(predicted_protability.shape[0]):
-                if predicted_protability[i][0]>=0.5:
-                    predicted_class.append(1)
-                else:
-                    predicted_class.append(0)
-                predicted_class_new = predicted_class
-            for i in range(len(predicted_class)):
-                if predicted_class[i]==0:
-                    predicted_protability_new.append(predicted_protability[i][1])
-                else:
-                    predicted_protability_new.append(predicted_protability[i][1])
-
-        else:
-            for i in range(predicted_protability.shape[0]):
-                if predicted_protability[i][0]>=0.5:
-                    predicted_class.append(0)
-                else:
-                    predicted_class.append(1)
-            predicted_class_new = predicted_class
-            predicted_protability_new =predicted_protability[:,0]
-    predicted_class_new = assign_activity(predicted_class_new)  # transform results (0 and 1) into 'active' and 'non-active'
-    return predicted_class_new, predicted_protability_new
+    predicted_class_new = assign_activity(predicted_class) 
+    return predicted_class_new, predicted_probability
 
 
 # create an app object using the Flask class
@@ -271,10 +201,13 @@ def predict():
     # choose scaler and model
     #    name = int_features[0]
     model_id = int_features[0]
-    model_name = model_selection(model_id)
-    model = load_model(model_name)
-    scaler_name = model_name + '.joblib'
+    model_name, activity_name = model_selection(model_id)
+    model_name_full = model_name + 'best_model.keras'
+    print(model_name_full)
+    model = load_model(model_name_full)
+    scaler_name = model_name + 'minmax_scaler.pkl'
     print(scaler_name)
+
     scaler = joblib.load(os.path.join(os.getcwd(),scaler_name))
     print(scaler is None)
 
@@ -288,52 +221,24 @@ def predict():
         peptide_sequence_list.append(tuple_sequence)  # build a summarize list variable including all the sequence information
         one_seq_embeddings = esm_embeddings(peptide_sequence_list)  # conduct the embedding
         embeddings_results = pd.concat([embeddings_results,one_seq_embeddings])
+
     normalized_embeddings_results = scaler.transform(embeddings_results)  # normalized the embeddings
-
     # prediction
-    predicted_protability = model.predict(normalized_embeddings_results, batch_size=1)
+    predicted_probability = model.predict(normalized_embeddings_results, batch_size=1)
+    predicted_class = np.argmax(predicted_probability, axis=1) # operating horizontally /// row-wise
 
+    predicted_class_new = assign_activity(predicted_class) 
 
-    predicted_class = []
-    predicted_class_new = []
-    if 'FL' in model_name:
-        for i in range(predicted_protability.shape[0]):
-            if predicted_protability[i][0]>=0.5:
-                predicted_class.append(1)
-            else:
-                predicted_class.append(0)
-        # reverse results for several model
-        if 'umami' in model_name or 'AMAP' in model_name or 'MRSA' in model_name or 'AMP' in model_name:
-             for i in range(len(predicted_class)):
-                 if predicted_class[i]==0:
-                     predicted_class_new.append(1)
-                 else:
-                     predicted_class_new.append(0)
-        else:
-            predicted_class_new = predicted_class
-
-    else:
-        for i in range(predicted_protability.shape[0]):
-            index = np.where(predicted_protability[i] == np.amax(predicted_protability[i]))[0][0]
-            predicted_class.append(index)  # get the class of the results
-        # AMP dataset is different where 0 is negative and 1 is positive
-        if 'AMP' in model_name or '6_AMAP_main' in model_name or '14_antioxidant' in model_name:
-             for i in range(len(predicted_class)):
-                 if predicted_class[i]==0:
-                     predicted_class_new.append(1)
-                 else:
-                     predicted_class_new.append(0)
-        else:
-            predicted_class_new = predicted_class
-
-    predicted_class = assign_activity(predicted_class_new)  # transform results (0 and 1) into 'active' and 'non-active'
     final_output = []
+    final_output.append(activity_name + ': ')
     for i in range(len(sequence_list)):
-        temp_output=sequence_list[i]+': '+predicted_class[i]+';'
+        # print()
+        print(predicted_class_new[i])
+        temp_output=sequence_list[i]+': '+ predicted_class_new[i] + ' '+ str(round(predicted_probability[i, 1],4)) + ';' 
         final_output.append(temp_output)
 
     return render_template('index.html',
-                           prediction_text="Prediction results of input sequences {}".format(final_output))
+                           prediction_text="Prediction results of input sequences{}".format(final_output))
 
 
 @app.route('/pred_with_file', methods=['POST'])
@@ -359,7 +264,7 @@ def pred_with_file():
     file.save(save_location)
     sequence_list = []
     if filetype == 'xls' or filetype == 'xlsx':
-        df = pandas.read_excel(save_location, header=0)
+        df = pd.read_excel(save_location, header=0)
         sequence_list = df["sequence"].tolist()
     if filetype == 'txt' or filetype == 'fasta':
         sequence_list = text_fasta_reading(save_location)
@@ -370,13 +275,13 @@ def pred_with_file():
     report = {"sequence": sequence_list}
     print(models)
     for model in models:
-        model_name = model_selection(model)
-        activities, protability = get_activity(model_name, sequence_list)
-        report[model_name] = activities
-        protability_column_model = model_name + '_protability'
-        report[protability_column_model] = protability
+        model_name, activity_name = model_selection(model)
+        activities, probability = get_activity(model_name, sequence_list)
+        report[activity_name] = activities
+        probability_column_model = activity_name + '_probability'
+        report[probability_column_model] = probability[:,1]
 
-    report_df = pandas.DataFrame(report)
+    report_df = pd.DataFrame(report)
     save_result_path = os.path.join('input', "report.xlsx")
     report_df.to_excel(save_result_path)
     send_from_directory("input", "report.xlsx")

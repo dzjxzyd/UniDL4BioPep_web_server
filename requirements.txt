@@ -5,7 +5,7 @@ numpy
 fair-esm
 keras
 scikit-learn
-tensorflow-cpu
+tensorflow
 joblib
 gunicorn
 werkzeug

@@ -161,9 +161,17 @@ def get_activity(model_name, sequence_list) -> list:
     # sequence_list=['QPFPQPQLPY','IPPYCTIAPV','SLQALRSMC']
     model_name_full = model_name + 'best_model.keras'
     print(model_name_full)
-    model = load_model(model_name_full)
+    try:
+        model = load_model(os.path.join(os.getcwd(),model_name_full))
+    except OSError as e:
+        print(f"Failed to load model: {e}")
+        
     scaler_name = model_name + 'minmax_scaler.pkl'
-    scaler = joblib.load(os.path.join(os.getcwd(),scaler_name))
+    try:
+        scaler = joblib.load(os.path.join(os.getcwd(),scaler_name))
+    except OSError as e:
+        print(f"Failed to load scaler: {e}")
+
     # 因为这个list里又两个element我们需要第二个，所以我只需要把吧这个拿出来，然后split
     # 另外需要注意，这个地方，网页上输入的时候必须要是AAA,CCC,SAS, 这个格式，不同的sequence的区分只能使用逗号，其他的都不可以
     embeddings_results = pd.DataFrame()
@@ -187,6 +195,8 @@ def get_activity(model_name, sequence_list) -> list:
 # create an app object using the Flask class
 @app.route('/')
 def home():
+    import os
+    print(f"Current working directory: {os.getcwd()}")
     return render_template('index.html')
 
 
@@ -196,6 +206,7 @@ def predict():
     # int_features  = [str(x) for x in request.form.values()] # this command basically use extract all the input into a list
     # final_features = [np.array(int_features)]
     int_features = [str(x) for x in request.form.values()]
+    print(int_features)
     # we have two input in the website, one is the model type and other is the peptide sequences
 
     # choose scaler and model
@@ -203,10 +214,17 @@ def predict():
     model_id = int_features[0]
     model_name, activity_name = model_selection(model_id)
     model_name_full = model_name + 'best_model.keras'
-    print(model_name_full)
-    model = load_model(model_name_full)
+    try:
+        model = load_model(os.path.join(os.getcwd(),model_name_full))
+        print(model_name_full)
+    except OSError as e:
+        print(f"Failed to load model: {e}")
     scaler_name = model_name + 'minmax_scaler.pkl'
-    print(scaler_name)
+    try:
+        scaler = joblib.load(os.path.join(os.getcwd(),scaler_name))
+    except OSError as e:
+        print(f"Failed to load scaler: {e}")
+        print(scaler_name)
     scaler = joblib.load(os.path.join(os.getcwd(),scaler_name))
     sequence_list = int_features[1].split(',')  # 因为这个list里又两个element我们需要第二个，所以我只需要把吧这个拿出来，然后split
     # 另外需要注意，这个地方，网页上输入的时候必须要是AAA,CCC,SAS, 这个格式，不同的sequence的区分只能使用逗号，其他的都不可以

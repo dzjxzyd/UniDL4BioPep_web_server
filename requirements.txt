@@ -1,14 +1,13 @@
-Flask
-pandas
-numpy
+Flask==3.0.3
+pandas==2.2.0
+numpy==1.26.3
 fair-esm==2.0.0
-keras==2.11.0
-scikit-learn
-tensorflow-cpu
-torch  --index-url https://download.pytorch.org/whl/cpu
-joblib
-gunicorn
+keras==3.4.1
+scikit-learn==1.4.1
+tensorflow-cpu==2.16.2
+torch==2.2.0  --index-url https://download.pytorch.org/whl/cpu
+joblib==1.3.2
 werkzeug==2.2.2
 openpyxl==3.0.9
 urllib3==1.26.6
-h5py
+h5py==3.11.0

@@ -1,12 +1,11 @@
--f https://download.pytorch.org/whl/torch_stable.html
 Flask
 pandas
 numpy
 fair-esm==2.0.0
 keras==2.11.0
 scikit-learn
-tensorflow-cpu== 2.11.0
-torch==1.12.0+cpu
+tensorflow-cpu
+torch  --index-url https://download.pytorch.org/whl/cpu
 joblib
 gunicorn
 werkzeug==2.2.2

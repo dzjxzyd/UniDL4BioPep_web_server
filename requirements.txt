@@ -1,6 +1,6 @@
 Flask
 fair-esm==2.0.0
-tensorflow-cpu==2.16.2
+tensorflow-cpu==2.13.1
 keras
 torch==2.2.0  --index-url https://download.pytorch.org/whl/cpu
 pandas==2.2.0

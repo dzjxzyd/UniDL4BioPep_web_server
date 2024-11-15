@@ -205,7 +205,7 @@ def predict():
     #    name = int_features[0]
     model_id = int_features[0]
     model_name, activity_name = model_selection(model_id)
-    model_name_full = model_name + 'best_model.keras'
+    model_name_full = model_name + 'best_model'
     print(model_name, activity_name)
     print(model_name_full)
     print(model_name_full)

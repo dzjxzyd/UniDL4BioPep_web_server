@@ -6,7 +6,7 @@ fair-esm==2.0.0
 keras==2.11.0
 scikit-learn==1.0.2
 torch==1.12.0+cpu
-joblib==1.2.0
+joblib
 gunicorn==20.1.0
 werkzeug==2.2.2
 openpyxl==3.0.9

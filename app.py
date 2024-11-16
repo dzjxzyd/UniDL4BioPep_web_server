@@ -159,9 +159,9 @@ def get_activity(model_name, sequence_list) -> list:
     # os.chdir('/Users/zhenjiaodu/Downloads/UniDL4BioPep_web_server-main_2')
     # model_name = '6_AMAP_main'
     # sequence_list=['QPFPQPQLPY','IPPYCTIAPV','SLQALRSMC']
-    model_name_full = model_name + '_keras_2_best_model.keras'
+    model_name_full = model_name + 'keras_2_best_model.keras'
     print(model_name_full)
-    scaler_name = model_name + '_keras_2_minmax_scaler.pkl'
+    scaler_name = model_name + 'keras_2_minmax_scaler.pkl'
     scaler = joblib.load(scaler_name)
     model = load_model(model_name_full)
     # 因为这个list里又两个element我们需要第二个，所以我只需要把吧这个拿出来，然后split
@@ -205,10 +205,10 @@ def predict():
     #    name = int_features[0]
     model_id = int_features[0]
     model_name, activity_name = model_selection(model_id)
-    model_name_full = model_name + '_keras_2_best_model.h5'
+    model_name_full = model_name + 'keras_2_best_model.h5'
     print(model_name, activity_name)
     print(model_name_full)
-    scaler_name = model_name + '_keras_2_minmax_scaler.pkl'
+    scaler_name = model_name + 'keras_2_minmax_scaler.pkl'
     scaler = joblib.load(scaler_name)
     model = load_model(model_name_full)
     sequence_list = int_features[1].split(',')  # 因为这个list里又两个element我们需要第二个，所以我只需要把吧这个拿出来，然后split

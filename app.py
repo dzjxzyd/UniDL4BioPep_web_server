@@ -205,7 +205,7 @@ def predict():
     #    name = int_features[0]
     model_id = int_features[0]
     model_name, activity_name = model_selection(model_id)
-    model_name_full = model_name + 'keras_2_best_model.h5'
+    model_name_full = model_name + 'keras_2_best_model.keras'
     print(model_name, activity_name)
     print(model_name_full)
     scaler_name = model_name + 'keras_2_minmax_scaler.pkl'

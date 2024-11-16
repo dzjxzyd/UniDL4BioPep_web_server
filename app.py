@@ -163,7 +163,7 @@ def get_activity(model_name, sequence_list) -> list:
     print(model_name_full)
     scaler_name = model_name + 'minmax_scaler.pkl'
     scaler = joblib.load(scaler_name)
-    model = load_model(model_name_full)
+    model = load_model('keras_2_best_model.keras')
     # 因为这个list里又两个element我们需要第二个，所以我只需要把吧这个拿出来，然后split
     # 另外需要注意，这个地方，网页上输入的时候必须要是AAA,CCC,SAS, 这个格式，不同的sequence的区分只能使用逗号，其他的都不可以
     embeddings_results = pd.DataFrame()
@@ -211,7 +211,7 @@ def predict():
     print(model_name_full)
     scaler_name = model_name + 'minmax_scaler.pkl'
     scaler = joblib.load(scaler_name)
-    model = load_model(model_name_full)
+    model = load_model('keras_2_best_model.keras')
     sequence_list = int_features[1].split(',')  # 因为这个list里又两个element我们需要第二个，所以我只需要把吧这个拿出来，然后split
     # 另外需要注意，这个地方，网页上输入的时候必须要是AAA,CCC,SAS, 这个格式，不同的sequence的区分只能使用逗号，其他的都不可以
     embeddings_results = pd.DataFrame()

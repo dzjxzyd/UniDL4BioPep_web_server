@@ -1,5 +1,5 @@
 version: 1.0
-runtime: python311
+runtime: python3
 build:
   commands:
     build:
@@ -10,11 +10,13 @@ build:
       - pip install joblib
       - pip install fair-esm==2.0.0
       - pip install torch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 --index-url https://download.pytorch.org/whl/cpu
-      - pip install Flask==2.2.2
       - pip install pandas
       - pip install scikit-learn
       - pip install urllib3<2.0
-      - pip install werkzeug==2.2.2
+      - pip install Flask==2.2.2
+      - pip install werkzeug==2.3.7
+      
 run: 
-  runtime-version: 3.11
   command: gunicorn --timeout 1000 --keep-alive 60 app:app
+
+

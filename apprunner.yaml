@@ -4,7 +4,7 @@ build:
   commands:
     build:
       - pip install --upgrade pip
-      - pip install tensorflow==2.11.0
+      - pip install tensorflow==2.15.0
       - pip install gunicorn==20.1.0
       - pip install openpyxl
       - pip install joblib
@@ -12,10 +12,9 @@ build:
       - pip install torch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 --index-url https://download.pytorch.org/whl/cpu
       - pip install pandas
       - pip install scikit-learn
-      - pip install urllib3<2.0
+      - pip install urllib3==1.26.6
       - pip install Flask==2.2.2
       - pip install werkzeug==2.3.7
-      
 run: 
   command: gunicorn --timeout 1000 --keep-alive 60 app:app
 

@@ -4,7 +4,7 @@ build:
   commands:
     build:
       - pip install --upgrade pip
-      - pip install tensorflow==2.15.0
+      - pip install tensorflow==2.13.1
       - pip install gunicorn==20.1.0
       - pip install openpyxl
       - pip install joblib

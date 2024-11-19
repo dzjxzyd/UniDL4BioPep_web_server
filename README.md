@@ -4,8 +4,6 @@ Webserver is deployed on AWS AppRunner at https://nepc2pvmzy.us-east-1.awsapprun
 
 It is worthing noting, AWS AppRunner can only support keras 2 and tensorflow < 2.16. because of the compability problem, the model here can only work with the keras2 tensorflow < 2.16, if your environment is keras 3 and tensorflow >= 2.16, you can download models at https://github.com/dzjxzyd/UniDL4BioPep_web_server_keras_3/tree/main
 
-a potential bug, might occur, if you are using tensorflow==2.12.2, some of the model you might not be able to load them. you can upgrade your tensorflow to tensorflow==2.15.0; it will be solved. 
-
 Running this server locally is very easy.
 
 ```

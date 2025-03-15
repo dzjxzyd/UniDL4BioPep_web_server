@@ -198,8 +198,8 @@ def predict():
     # int_features  = [str(x) for x in request.form.values()] # this command basically use extract all the input into a list
     # final_features = [np.array(int_features)]
     import os
-    print(os.listdir())
-    print(os.getcwd())
+    # print(os.listdir())
+    # print(os.getcwd())
     int_features = [str(x) for x in request.form.values()]
     print(int_features)
     # we have two input in the website, one is the model type and other is the peptide sequences

@@ -197,6 +197,8 @@ def predict():
     # 每一个网页上的 输入的框，是一个单独的x，下面这个就是吧这个单独的信息变成一个list，每一个单独的就是一个str （也可以吧x变成int 如果想要的话）
     # int_features  = [str(x) for x in request.form.values()] # this command basically use extract all the input into a list
     # final_features = [np.array(int_features)]
+    import os
+    print(os.getcwd())
     int_features = [str(x) for x in request.form.values()]
     print(int_features)
     # we have two input in the website, one is the model type and other is the peptide sequences

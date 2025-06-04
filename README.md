@@ -30,9 +30,6 @@ NNWNG	        non-active	          0.045210306
 # the above is an example results,
 "Antihypertensive probability" this is an indicator for your, how confident the model with its prediction,
 
-for example, the 0.981061339 means the model think the probability is 0.981061339 for the active prediction of Antihypertensive activity.
-while the 0.045210306 means the model think the probability is 0.045210306 for the active prediction of Antihypertensive activity (Therefore, we got an non-active output)
-
 ################################################################
 ######################## Additional notice #####################
 

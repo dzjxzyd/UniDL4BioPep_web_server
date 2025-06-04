@@ -24,18 +24,18 @@
 <body>
     <div class="content">
         <h1>UniDL4BioPep: A universal deep learning architecture for bioactive peptide prediction</h1>
-        <p style="font-size:70%">The webserver is the implementation of the paper "Du, Z., Ding, X., Xu, Y., & Li, Y. (2023). UniDL4BioPep: a universal deep learning architecture for binary classification in peptide bioactivity. Briefings in Bioinformatics, bbad135."</p>
+        <p style="font-size:70%">The webserver is the implementation of the paper with some modifications "Du, Z., Ding, X., Xu, Y., & Li, Y. (2023). UniDL4BioPep: a universal deep learning architecture for binary classification in peptide bioactivity. Briefings in Bioinformatics, bbad135."</p>
         <p style="font-size:70%">Notice: For very large dataset processing: please download our model locally or contact us at zhenjiao@ksu.edu or yonghui@ksu.edu for more assistant.  </p>
   <fieldset>
             <legend>Result Explanation</legend>
             <p style="font-size:80%; font-family:monospace;">
             <p style="font-size:80%; font-family:monospace;">   sequence    Antihypertensive    Antihypertensive_probability</p>
-            <p style="font-size:80%; font-family:monospace;">   QKTAP       active              0.981061339</p>
-            <p style="font-size:80%; font-family:monospace;">   NNWNG       non-active          0.045210306</p>
+            <p style="font-size:80%; font-family:monospace;">   QKTAP       active              0.981</p>
+            <p style="font-size:80%; font-family:monospace;">   NNWNG       non-active          0.045</p>
             <p style="font-size:80%; font-family:monospace;">  "Antihypertensive probability" is an indicator of how confident the model is with its prediction. </p>
             <p style="font-size:80%; font-family:monospace;">  For example:</p>
-            <p style="font-size:80%; font-family:monospace;">  - A probability of 0.981061339 indicates the model is 98.1% confident in the active prediction.</p>
-            <p style="font-size:80%; font-family:monospace;">  - A probability of 0.045210306 indicates the model is only 4.5% confident in the active prediction, resulting in a non-active output.</p>
+            <p style="font-size:80%; font-family:monospace;">  - A probability of 0.981 indicates the model is highly confident in the active prediction; while a probability of 0.045 indicates the model is less confident in the active prediction, resulting in a non-active output.</p>
+            <p style="font-size:80%; font-family:monospace;">  - Notice: the number of probability is not linearly corresponding to the model's confidentce; the improvement from 0.8 to 0.9 is much bigger than that from 0.7 to 0.8  </p>
                           
   </fieldset>
   

@@ -165,7 +165,8 @@
                 <div class="step-card"><div class="step-number">3</div><i class="fas fa-download"></i><h3>Download Results</h3><p>Get comprehensive report</p></div>
             </div>
 
-            <form id="batchForm" action="{{url_for('pred_with_file')}}" method="post" enctype="multipart/form-data">
+            <form id="batchForm" action="/pred_with_file" method="post" enctype="multipart/form-data">
+                
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-file-alt"></i> Upload File:</label>
 
@@ -209,189 +210,13 @@
 
                 <button type="submit" class="btn btn-block"><i class="fas fa-play-circle"></i>Process Batch Prediction</button>
                 <p>The prediction results will be automatically downloaded as a excel file, please be patient.</p>
+                
             </form>
         </div>
-
-        <!-- Result Explanation Card -->
-        <div class="card">
-            <div class="card-header"><div class="card-icon"><i class="fas fa-chart-line"></i></div><h2 class="card-title">Result Interpretation</h2></div>
-            <p style="font-size: 0.9rem; color: #666; margin-bottom: 1.5rem;">Based on Sigmoid Probability Output</p>
-            <div class="demo-section">
-                <div class="demo-title"><i class="fas fa-table"></i>Example Output</div>
-                <div style="overflow-x: auto; margin: 1rem 0;">
-                    <table style="width: 100%; border-collapse: collapse; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                        <thead>
-                            <tr style="background: linear-gradient(135deg, #667eea, #764ba2); color: white;">
-                                <th style="padding: 1rem; text-align: left; font-weight: 600;">Sequence</th>
-                                <th style="padding: 1rem; text-align: center; font-weight: 600;">Predicted Class</th>
-                                <th style="padding: 1rem; text-align: center; font-weight: 600;">Probability</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr style="background: white;">
-                                <td style="padding: 1rem; font-family: 'Courier New', monospace; font-weight: 600; color: #2d3748;">QKTAP</td>
-                                <td style="padding: 1rem; text-align: center;"><span style="background: #10b981; color: white; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.85rem; font-weight: 500;">active</span></td>
-                                <td style="padding: 1rem; text-align: center; font-family: 'Courier New', monospace; font-weight: 600; color: #10b981;">0.981 (98.1%)</td>
-                            </tr>
-                            <tr style="background: #f7fafc;">
-                                <td style="padding: 1rem; font-family: 'Courier New', monospace; font-weight: 600; color: #2d3748;">NNWNG</td>
-                                <td style="padding: 1rem; text-align: center;"><span style="background: #ef4444; color: white; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.85rem; font-weight: 500;">non-active</span></td>
-                                <td style="padding: 1rem; text-align: center; font-family: 'Courier New', monospace; font-weight: 600; color: #ef4444;">0.045 (4.5%)</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div style="background: rgba(102,126,234,0.1); border-left: 4px solid #667eea; padding: 1.5rem; border-radius: 0 10px 10px 0; margin-top: 1.5rem;">
-                    <h4 style="color: #2d3748; margin-bottom: 1rem; display: flex; align-items: center;"><i class="fas fa-lightbulb" style="color: #667eea; margin-right: 0.5rem;"></i>Probability Interpretation</h4>
-                    <ul style="margin: 0; padding-left: 1.5rem; line-height: 1.6;">
-                        <li><strong>0.981</strong> means the model is <strong>98.1% confident</strong> that QKTAP is active</li>
-                        <li><strong>0.045</strong> means the model is <strong>4.5% confident</strong> that NNWNG is active, so it is classified as <strong>non-active</strong></li>
-                    </ul>
-                </div>
-                <div style="background: rgba(251,191,36,0.1); border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 0 10px 10px 0; margin-top: 1rem;">
-                    <h4 style="color: #2d3748; margin-bottom: 1rem; display: flex; align-items: center;"><i class="fas fa-exclamation-triangle" style="color: #f59e0b; margin-right: 0.5rem;"></i>Sigmoid Function Note</h4>
-                    <p style="margin: 0; font-size: 0.9rem; line-height: 1.6; color: #4a5568;">
-                        The sigmoid curve flattens as probability approaches 0 or 1, so improving confidence near extremes requires increasingly large changes in the model score. The difference between <strong>98.1%</strong> and <strong>99.1%</strong> represents a much larger improvement than the same 1% gain at mid-range probabilities (like 71% and 70%).
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Model Architecture Card -->
-        <div class="card">
-            <div class="card-header"><div class="card-icon"><i class="fas fa-sitemap"></i></div><h2 class="card-title">Model Architecture</h2></div>
-            <div style="text-align: center;">
-                <img src="static/css/Whole architecture.png" alt="UniDL4BioPep Architecture" class="architecture-img" />
-                <p style="font-style: italic; color: #666; margin-top: 1rem;">Universal deep learning architecture for bioactive peptide prediction</p>
-            </div>
-        </div>
-        <!-- Dataset Information Card -->
-        <div class="card">
-            <div class="card-header">
-                <div class="card-icon">
-                    <i class="fas fa-database"></i>
-                </div>
-                <h2 class="card-title">Training Datasets</h2>
-            </div>
-            <div style="overflow-x: auto;">
-                <table class="dataset-table">
-                    <thead>
-                        <tr>
-                            <th>Bioactivity</th>
-                            <th>Training Dataset</th>
-                            <th>Test Dataset</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>ACE inhibitory activity</td>
-                            <td>913 positives and 913 negatives</td>
-                            <td>386 positives and 386 negatives</td>
-                        </tr>
-                        <tr>
-                            <td>DPP IV inhibitory activity</td>
-                            <td>532 positives and 532 negatives</td>
-                            <td>133 positives and 133 negatives</td>
-                        </tr>
-                        <tr>
-                            <td>Bitter</td>
-                            <td>256 positives and 256 negatives</td>
-                            <td>64 positives and 64 negatives</td>
-                        </tr>
-                        <tr>
-                            <td>Umami</td>
-                            <td>112 positives and 241 negatives</td>
-                            <td>28 positives and 61 negatives</td>
-                        </tr>
-                        <tr>
-                            <td>Antimicrobial activity</td>
-                            <td>3876 positives and 9552 negatives</td>
-                            <td>2584 positives and 6369 negatives</td>
-                        </tr>
-                        <tr>
-                            <td>Antimalarial activity</td>
-                            <td>Main: 111 positives, 1708 negatives<br>Alternative: 111 positives, 542 negatives</td>
-                            <td>Main: 28 positives, 427 negatives<br>Alternative: 28 positives, 135 negatives</td>
-                        </tr>
-                        <tr>
-                            <td>Quorum sensing activity</td>
-                            <td>200 positives and 200 negatives</td>
-                            <td>20 positives and 20 negatives</td>
-                        </tr>
-                        <tr>
-                            <td>Anticancer activity</td>
-                            <td>Main: 689 positives, 689 negatives<br>Alternative: 776 positives, 776 negatives</td>
-                            <td>Main: 172 positives, 172 negatives<br>Alternative: 194 positives, 194 negatives</td>
-                        </tr>
-                        <tr>
-                            <td>Anti-MRSA strains activity</td>
-                            <td>118 positives and 678 negatives</td>
-                            <td>30 positives and 169 negatives</td>
-                        </tr>
-                        <tr>
-                            <td>Tumor T cell antigens</td>
-                            <td>470 positives and 318 negatives</td>
-                            <td>122 positives and 75 negatives</td>
-                        </tr>
-                        <tr>
-                            <td>Blood-Brain Barrier</td>
-                            <td>100 positives and 100 negatives</td>
-                            <td>19 positives and 19 negatives</td>
-                        </tr>
-                        <tr>
-                            <td>Anti-parasitic activity</td>
-                            <td>255 positives and 255 negatives</td>
-                            <td>46 positives and 46 negatives</td>
-                        </tr>
-                        <tr>
-                            <td>Neuropeptide</td>
-                            <td>1940 positives and 1940 negatives</td>
-                            <td>485 positives and 485 negatives</td>
-                        </tr>
-                        <tr>
-                            <td>Antibacterial activity</td>
-                            <td>6583 positives and 6583 negatives</td>
-                            <td>1695 positives and 1695 negatives</td>
-                        </tr>
-                        <tr>
-                            <td>Antifungal activity</td>
-                            <td>778 positives and 778 negatives</td>
-                            <td>215 positives and 215 negatives</td>
-                        </tr>
-                        <tr>
-                            <td>Antiviral activity</td>
-                            <td>2321 positives and 2321 negatives</td>
-                            <td>623 positives and 623 negatives</td>
-                        </tr>
-                        <tr>
-                            <td>Toxicity</td>
-                            <td>1642 positives and 1642 negatives</td>
-                            <td>290 positives and 290 negatives</td>
-                        </tr>
-                        <tr>
-                            <td>Antioxidant activity</td>
-                            <td>582 positives and 541 negatives</td>
-                            <td>146 positives and 135 negatives</td>
-                        </tr>
-                        <tr>
-                            <td>Allergen</td>
-                            <td>Data available upon request</td>
-                            <td>Data available upon request</td>
-                        </tr>
-                        <tr>
-                            <td>Cell Penetrating Peptide</td>
-                            <td>Data available upon request</td>
-                            <td>Data available upon request</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
     </div>
 
     <script>
-        // ============ 工具：重置“Process Batch Prediction”按钮 ============
+        // ============ 工具：重置"Process Batch Prediction"按钮 ============
         function resetBatchButton() {
             const btn = document.querySelector('#batchForm button[type="submit"]');
             if (btn) {
@@ -469,11 +294,12 @@
             const submitButton = this.querySelector('button[type="submit"]');
             submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
             submitButton.disabled = true;
-            // 兜底：20 秒后无论如何复位（可按需要调整时长）
+            
+            // 清除之前的定时器，设置30秒兜底
             clearTimeout(window._batchResetTimer);
             window._batchResetTimer = setTimeout(() => {
                 resetBatchButton();
-            }, 500);
+            }, 30000);
         });
 
         // ============ Drag & Drop（不自动提交，不重建 DOM） ============
@@ -496,7 +322,7 @@
             });
 
             dropZone.addEventListener('drop', e => {
-                // ② 拖拽到此：把文件“灌入”隐藏 input，然后触发 change（会调用 resetBatchButton）
+                // ② 拖拽到此：把文件"灌入"隐藏 input，然后触发 change（会调用 resetBatchButton）
                 const files = e.dataTransfer && e.dataTransfer.files ? e.dataTransfer.files : null;
                 if (!files || files.length === 0) return;
 
@@ -510,7 +336,37 @@
                 // document.getElementById('batchForm').requestSubmit(); // ← 确认这行不存在或被注释
             });
         })();
+        
+        document.getElementById('batchForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const btn = form.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
 
+        try {
+            const fd = new FormData(form);
+            const res = await fetch(form.action, { method: 'POST', body: fd });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+            const blob = await res.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'report.xlsx';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+        } catch (err) {
+            console.error(err);
+            alert('下载失败，请稍后重试');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-play-circle"></i> Process Batch Prediction';
+        }
+        });
+        
         // ============ 页面初次加载时也重置一次按钮（保险） ============
         resetBatchButton();
     </script>
